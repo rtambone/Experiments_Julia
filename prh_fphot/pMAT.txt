@@ -1,0 +1,15 @@
+# Load and extract processed data
+resProcessed= loadPreproccesData();
+rawSig= vec(resProcessed["rawSig"]);
+rawIso= vec(resProcessed["rawIso"]);
+ts= vec(resProcessed["ts"]);
+correctedSig= vec(resProcessed["correctedRaw"]);
+correctedIso= vec(resProcessed["correctedIso"]);
+plotData(ts, rawSig, rawIso, "GCaMP", "Isosbestic", "Raw signals (downsampled)")
+plotData(ts, correctedSig, correctedIso,"GCaMP", "Isosbestic", "Photobleached-corrected");
+
+# Smooth signals and reduce high-frequency noise
+smoothSig= smoothLoess(ts, sig, 0.002);
+smoothIso= smoothLoess(ts, iso, 0.002);
+plotData(ts, smoothSig, smoothIso, "GCaMP", "Isosbestic,", title= "Loess smoothin")
+savefig(plotDir*"\\loessSmoothin.png")

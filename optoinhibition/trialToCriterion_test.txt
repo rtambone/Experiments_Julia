@@ -1,0 +1,33 @@
+        mat= [idxs tt correct]; 
+        t1= mat[mat[:,2].==1,[1,3]];
+        t2= mat[mat[:,2].==2,[1,3]];
+        #---------------------------#
+        println("Analyzing corrected responses ...")
+        pCorr= [];
+        for trial in 1:nTrials
+            mask1= t1[:,1].==trial;
+            mask2= t2[:,1].==trial;
+            idx1= findfirst(mask1); 
+            idx2= findfirst(mask2); 
+
+            if idx1== nothing 
+                firstM= t2; 
+                secondM= t1; 
+                idx= idx2; 
+            else
+                firstM= t1; 
+                secondM= t2; 
+                idx= idx1;
+            end
+
+            value, index= findNearest(secondM[:,1], idx);
+
+            v1= firstM[idx:idx+4,2]
+            v2= secondM[index:index+4,2];
+            v= append!(v1, v2);
+            p= sum(v)/length(v)*100; 
+
+            if p>= 80 
+                println("Criterion trial: ", idx)
+            end
+

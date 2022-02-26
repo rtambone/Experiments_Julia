@@ -1,0 +1,14 @@
+#= 
+# Create matlab arrays for smooth functions
+rs= mxarray(dsSig);
+ri= mxarray(dsIso);
+
+# Smooth data 
+rsSmooth= mat"smooth($rs, 0.002, 'lowess')";
+riSmooth= mat"smooth($ri, 0.002, 'lowess')";
+
+# Normalize data and compute deltaF MATLAB
+bls= mat"polyfit($rsSmooth(1:end),$riSmooth(1:end),1)";
+Y_Fit=  mat"$bls(1).*$riSmooth+$bls(2)";
+DeltaSig= mat"($rsSmooth(:)-$Y_Fit(:))./$Y_Fit(:)";
+=# 

@@ -1,0 +1,16 @@
+########### This is pure raw data, w/o any preprocessing ################
+res= loadRawData();
+rawSig= vec(res["rawSig"]);
+rawIso= vec(res["rawIso"]);
+ts= vec(res["clockTS"]);
+
+# Downsample signals 
+fs= 5000;
+dsTs, dsSig, dsFs= downSample(rawSig, fs);
+dsTs, dsIso, dsFs= downSample(rawIso, fs);
+
+# Smooth signals and reduce high-frequency noise
+smoothSig= smoothLoess(dsTs, dsSig, 0.002);
+smoothIso= smoothLoess(dsTs, dsIso, 0.002);
+plotData(dsTs, smoothSig, smoothIso, "Smoothed data")
+#########################################################################
